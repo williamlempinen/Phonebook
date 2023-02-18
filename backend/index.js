@@ -1,7 +1,9 @@
 const express = require('express');
+const morgan = require("morgan");
 const app = express();
 
 app.use(express.json());
+app.use(morgan("tiny"));
 
 const checkNames = (addPersonHere) => {
   let personName = addPersonHere.name;
@@ -75,13 +77,13 @@ app.post("/api/persons", (req, res) => {
   const body = req.body;
 
   const newPerson = {
-    id: newId,
+    id: Number(newId),
     name: body.name,
     number: body.number
   };
 
-  let bool12 = checkNames(newPerson);
-  let bool13 = checkNumbers(newPerson);
+  let bool1 = checkNames(newPerson);
+  let bool2 = checkNumbers(newPerson);
   let nameLen = newPerson.name.length;
   let numLen = newPerson.number.length;
 
@@ -91,7 +93,7 @@ app.post("/api/persons", (req, res) => {
         error: "content missing"
       })
     );
-  } else if (bool12 === false || bool13 === false || nameLen < 4 || numLen < 8) {
+  } else if (bool1 === false || bool2 === false || nameLen < 4 || numLen < 8) {
     return (
       res.status(400).json({
         error: "name or number is missing or is not unique"
