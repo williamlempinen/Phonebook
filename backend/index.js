@@ -3,6 +3,16 @@ const app = express();
 
 app.use(express.json());
 
+const checkNames = (addPersonHere) => {
+  let personName = addPersonHere.name;
+  return persons.every(person => personName !== person.name);
+}
+
+const checkNumbers = (addPersonHere) => {
+  let personNumber = addPersonHere.number;
+  return persons.every(person => personNumber !== person.number);
+}
+
 let persons = [
     {
       id: 1,
@@ -63,24 +73,32 @@ app.delete("/api/persons/:id", (req, res) => {
 app.post("/api/persons", (req, res) => {
   const newId = (Math.random() * 1000).toFixed(0);
   const body = req.body;
-  
+
+  const newPerson = {
+    id: newId,
+    name: body.name,
+    number: body.number
+  };
+
+  let bool12 = checkNames(newPerson);
+  let bool13 = checkNumbers(newPerson);
+  let nameLen = newPerson.name.length;
+  let numLen = newPerson.number.length;
+
   if (!body.content) {
     return (
       res.status(400).json({
         error: "content missing"
       })
     );
-  } else if (body.name) {
-
+  } else if (bool12 === false || bool13 === false || nameLen < 4 || numLen < 8) {
+    return (
+      res.status(400).json({
+        error: "name or number is missing or is not unique"
+      })
+    );
   } else {
-    const newPerson = {
-      id: newId,
-      name: body.name,
-      number: body.number
-    };
-
     persons = persons.concat(newPerson);
-
     res.json(newPerson);
     console.log(req.headers);
   }
