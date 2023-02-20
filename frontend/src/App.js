@@ -2,19 +2,20 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import Form from './components/Form';
 import Numbers from './components/Numbers';
+import AddMessage from './components/AddMessage';
+import DeleteMessage from './components/DeleteMessage';
 import contactService from "./services/contacts";
-
-
-
 
 const App = () => {
     
   const [ persons, setPersons ] = useState([]);
   const [ name, setName ] = useState("");
   const [ number, setNumber ] = useState("");
-
+  const [ addMessage, setAddMessage ] = useState(false);
+  const [ deleteMessage, setDeleteMessage ] = useState(false);
 
   useEffect(() => {
+    console.log("eka");
     contactService
     .getContacts()
     .then(contacts => {
@@ -22,7 +23,7 @@ const App = () => {
     })
     .catch(error => {
         console.log(error);
-    })
+    });
   }, []);
 
   const handleName = (e) => {
@@ -41,6 +42,7 @@ const App = () => {
       name: name,
       number: number
     };
+
     const value = persons.find(person => person.name === name);
     if (value) {
       alert(`${name} already in phonebook`);
@@ -52,8 +54,15 @@ const App = () => {
           setName("");
           setNumber("");
       });
+
+      setAddMessage(true);
+      setTimeout(() => {
+        setAddMessage(false);
+      }, 2000);
     }
   }
+
+  
 
   //*en saanut toimiaan vaaditulla tavalla, poistaa li-itemin vain näkymästä - ei db.jsonista
   const handleDelete = (e) => {
@@ -62,12 +71,18 @@ const App = () => {
       let itemToRemove = e.target.parentNode;
       itemToRemove.remove();
       console.log(itemToRemove);
+      setDeleteMessage(true);
+      setTimeout(() => {
+        setDeleteMessage(false);
+      }, 2000);
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <AddMessage message={ addMessage } />
+      <DeleteMessage message={ deleteMessage } />
       <Form 
       handleName={ handleName }
       name={ name }
