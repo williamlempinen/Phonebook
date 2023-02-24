@@ -62,16 +62,18 @@ const App = () => {
     }
   }
 
-  
-
-  //*en saanut toimiaan vaaditulla tavalla, poistaa li-itemin vain näkymästä - ei db.jsonista
   const handleDelete = (e) => {
-    console.log("delete button clicked");
+    let deleteId = e.target.parentNode.id;
     if (window.confirm("Are you sure you want to delete this contact?")) {
-      let itemToRemove = e.target.parentNode;
-      itemToRemove.remove();
-      console.log(itemToRemove);
-      setDeleteMessage(true);
+      contactService
+      .deleteContacts(deleteId)
+      .then(() => {
+        contactService
+        .getContacts()
+        .then(initialContacts => {
+          setPersons(initialContacts)
+        });
+      });
       setTimeout(() => {
         setDeleteMessage(false);
       }, 2000);

@@ -13,8 +13,8 @@ const createContacts = (newContact) => {
 }
 
 const deleteContacts = (id) => {
-    const req = axios.get(`${BASEURL}/${id}`);
-    return req.then(res => res.data.filter(p => p.id !== id));
+    const req = axios.delete(`${BASEURL}/${id}`);
+    return req.then(res => res.data);
 }
 
 export default { getContacts, createContacts, deleteContacts };

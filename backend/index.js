@@ -78,6 +78,7 @@ app.delete("/api/persons/:id", (req, res) => {
 app.post("/api/persons", (req, res) => {
   const newId = (Math.random() * 1000).toFixed(0);
   const body = req.body;
+  console.log(body);
 
   const newPerson = {
     id: Number(newId),
