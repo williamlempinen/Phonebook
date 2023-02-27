@@ -92,13 +92,7 @@ app.post("/api/persons", (req, res) => {
   let nameLen = newPerson.name.length;
   let numLen = newPerson.number.length;
 
-  if (!body.content) {
-    return (
-      res.status(400).json({
-        error: "content missing"
-      })
-    );
-  } else if (bool1 === false || bool2 === false || nameLen < 2 || numLen < 7) {
+  if (bool1 === false || bool2 === false || nameLen < 2 || numLen < 7) {
     return (
       res.status(400).json({
         error: "name or number is missing or is not unique"
