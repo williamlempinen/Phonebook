@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require("morgan");
 const cors = require("cors");
+
 const app = express();
 
 app.use(express.json());
@@ -97,7 +98,7 @@ app.post("/api/persons", (req, res) => {
         error: "content missing"
       })
     );
-  } else if (bool1 === false || bool2 === false || nameLen < 4 || numLen < 8) {
+  } else if (bool1 === false || bool2 === false || nameLen < 2 || numLen < 7) {
     return (
       res.status(400).json({
         error: "name or number is missing or is not unique"
