@@ -9,13 +9,13 @@ app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.static("build"));
 
-const checkNames = (addPersonHere) => {
-  let personName = addPersonHere.name;
+const checkNames = (personToBeAdded) => {
+  let personName = personToBeAdded.name;
   return persons.every(person => personName !== person.name);
 }
 
-const checkNumbers = (addPersonHere) => {
-  let personNumber = addPersonHere.number;
+const checkNumbers = (personToBeAdded) => {
+  let personNumber = personToBeAdded.number;
   return persons.every(person => personNumber !== person.number);
 }
 
