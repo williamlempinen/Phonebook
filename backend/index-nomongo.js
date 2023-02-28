@@ -1,5 +1,7 @@
 //*index.js toteutus, jonka tulisi olla yhteen sopiva mongo.js tiedoston kanssa (eli teht. 3.11)
-
+//*minulla oli käynyt huolimattomuusvirhe (en lukenut Huom-tekstiä tehtävissä 3.12 ja 3.13)
+//*joten en ole täysin satavarma onko tämä "täydellinen" varmuuskopio
+//*olin siis aloittanut index.js tiedoston muokkaamisen ennen kuin olin luonut tämän tiedoston
 const express = require('express');
 const morgan = require("morgan");
 const cors = require("cors");

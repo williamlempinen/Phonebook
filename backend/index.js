@@ -1,3 +1,6 @@
+//*routeissa olevat kommentit pitävät sisällään aikaisempia toteutuksia
+//*suosittelen pienentämään ne luettavuuden vuoksi
+
 require("dotenv").config();
 const express = require('express');
 const morgan = require("morgan");
@@ -67,7 +70,7 @@ app.get("/api/info", (req, res) => {
     res.send(info + "<br />" +  date);
 });
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
   //*aikaisemmissa tehtävissä käytetty tapa
   //*const id = Number(req.params.id);
   //*const person = persons.find(person => person.id === id);
@@ -81,16 +84,25 @@ app.get('/api/persons/:id', (req, res) => {
   //!uusi toteutus
   Person.findById(req.params.id)
   .then(person => {
-    res.json(person);
-  });
-
+    if (person) {
+      res.json(person);
+    } else {
+      res.status(404).end();
+    }
+  })
+  .catch(error => next(error));
 });
 
-app.delete("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  persons = persons.filter(person => person.id !== id);
-
-  res.status(204).end();
+app.delete("/api/persons/:id", (req, res, next) => {
+  //*aikaisemmissa tehtävissä käytetty tapa
+  //*const id = Number(req.params.id);
+  //*persons = persons.filter(person => person.id !== id);
+  //*res.status(204).end();
+  Person.findByIdAndRemove(req.params.id)
+  .then(person => {
+    res.status(204).end();
+  })
+  .catch(error => next(error));
 });
 
 app.post("/api/persons", (req, res) => {
@@ -132,6 +144,18 @@ app.post("/api/persons", (req, res) => {
   console.log(newPerson);
   res.json(newPerson);
 });
+
+const errorHandler = (error, req, res, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return res.status(400).send({ error: "couldn't find an existing contact" });
+  }
+
+  next(error);
+}
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

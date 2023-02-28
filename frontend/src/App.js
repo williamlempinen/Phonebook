@@ -27,7 +27,7 @@ const App = () => {
   }, []);
 
   const handleName = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setName(e.target.value);
   }
 
@@ -78,6 +78,7 @@ const App = () => {
           setPersons(initialContacts)
         });
       });
+      setDeleteMessage(true);
       setTimeout(() => {
         setDeleteMessage(false);
       }, 2000);
