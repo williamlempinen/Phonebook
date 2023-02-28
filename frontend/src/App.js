@@ -44,8 +44,12 @@ const App = () => {
     };
 
     const value = persons.find(person => person.name === name);
+    const numberLen = newContact.number.length;
+    const numberType = Number(newContact.number);
     if (value) {
       alert(`${name} already in phonebook`);
+    } else if (numberLen < 7 || !numberType) {
+      alert("Invalid phonenumber! Your phonenumber should be at least 7 characters long and contain only numbers.");
     } else {
       contactService
       .createContacts(newContact)
