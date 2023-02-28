@@ -1,3 +1,4 @@
+//*tässä on tehtävä 3.11
 const mongoose = require("mongoose");
 
 if (process.argv.length < 3) {

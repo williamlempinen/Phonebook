@@ -1,6 +1,8 @@
+require("dotenv").config();
 const express = require('express');
 const morgan = require("morgan");
 const cors = require("cors");
+const Person = require("./models/person");
 
 const app = express();
 
@@ -51,22 +53,33 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
-})
+  //*aikaisemmissa tehtävissä käytetty tapa
+  //*res.json(persons);
+    Person.find({})
+    .then(result => {
+      res.json(result);
+    });
+});
 
 app.get("/api/info", (req, res) => {
     res.send(info + "<br />" +  date);
 });
 
 app.get('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id);
-    const person = persons.find(person => person.id === id);
-    
-    if (person) {
-      res.json(person);
-    } else {
-      res.status(404).end();
-    }
+  //*const id = Number(req.params.id);
+  //*const person = persons.find(person => person.id === id);
+  //*
+  //*if (person) {
+  //*  res.json(person);
+  //*} else {
+  //*  res.status(404).end();
+  //*}
+
+  Person.findById(req.params.id)
+  .then(person => {
+    res.json(person);
+  });
+
 });
 
 app.delete("/api/persons/:id", (req, res) => {
@@ -77,15 +90,16 @@ app.delete("/api/persons/:id", (req, res) => {
 });
 
 app.post("/api/persons", (req, res) => {
-  const newId = (Math.random() * 1000).toFixed(0);
+  //*tapa, jolla luotiin uusi id henkilölle aikaisemmissa tehtävissä
+  //*const newId = (Math.random() * 1000).toFixed(0);
   const body = req.body;
   console.log(body);
 
-  const newPerson = {
-    id: Number(newId),
+  const newPerson = new Person({
+    //*id: Number(newId),
     name: body.name,
     number: body.number
-  };
+  });
 
   let bool1 = checkNames(newPerson);
   let bool2 = checkNumbers(newPerson);
@@ -99,16 +113,21 @@ app.post("/api/persons", (req, res) => {
       })
     );
   } else {
-    persons = persons.concat(newPerson);
-    res.json(newPerson);
-    console.log(req.headers);
+    //*aikaisemmissa tehtävissä käytetty tapa
+    //*persons = persons.concat(newPerson);
+    //*res.json(newPerson);
+    //*console.log(req.headers);
+    newPerson.save()
+    .then(savedPerson => {
+      res.json(savedPerson);
+    });
   }
 
   console.log(newPerson);
   res.json(newPerson);
 });
 
-const PORT = 3001
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
