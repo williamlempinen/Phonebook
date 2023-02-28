@@ -1,8 +1,8 @@
-require("dotenv").config();
+//*index.js toteutus, jonka tulisi olla yhteen sopiva mongo.js tiedoston kanssa (eli teht. 3.11)
+
 const express = require('express');
 const morgan = require("morgan");
 const cors = require("cors");
-const Person = require("./models/person");
 
 const app = express();
 
@@ -53,37 +53,22 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-  //*aikaisemmissa tehtävissä käytetty tapa
-  //*res.json(persons);
-
-  //!uusi toteutus
-    Person.find({})
-    .then(result => {
-      res.json(result);
-    });
-});
+  res.json(persons)
+})
 
 app.get("/api/info", (req, res) => {
     res.send(info + "<br />" +  date);
 });
 
 app.get('/api/persons/:id', (req, res) => {
-  //*aikaisemmissa tehtävissä käytetty tapa
-  //*const id = Number(req.params.id);
-  //*const person = persons.find(person => person.id === id);
-  //*
-  //*if (person) {
-  //*  res.json(person);
-  //*} else {
-  //*  res.status(404).end();
-  //*}
-
-  //!uusi toteutus
-  Person.findById(req.params.id)
-  .then(person => {
-    res.json(person);
-  });
-
+    const id = Number(req.params.id);
+    const person = persons.find(person => person.id === id);
+    
+    if (person) {
+      res.json(person);
+    } else {
+      res.status(404).end();
+    }
 });
 
 app.delete("/api/persons/:id", (req, res) => {
@@ -94,16 +79,15 @@ app.delete("/api/persons/:id", (req, res) => {
 });
 
 app.post("/api/persons", (req, res) => {
-  //*tapa, jolla luotiin uusi id henkilölle aikaisemmissa tehtävissä
-  //*const newId = (Math.random() * 1000).toFixed(0);
+  const newId = (Math.random() * 1000).toFixed(0);
   const body = req.body;
   console.log(body);
 
-  const newPerson = new Person({
-    //*id: Number(newId),
+  const newPerson = {
+    id: Number(newId),
     name: body.name,
     number: body.number
-  });
+  };
 
   let bool1 = checkNames(newPerson);
   let bool2 = checkNumbers(newPerson);
@@ -117,23 +101,16 @@ app.post("/api/persons", (req, res) => {
       })
     );
   } else {
-    //*aikaisemmissa tehtävissä käytetty tapa
-    //*persons = persons.concat(newPerson);
-    //*res.json(newPerson);
-    //*console.log(req.headers);
-
-    //!uusi toteutus
-    newPerson.save()
-    .then(savedPerson => {
-      res.json(savedPerson);
-    });
+    persons = persons.concat(newPerson);
+    res.json(newPerson);
+    console.log(req.headers);
   }
 
   console.log(newPerson);
   res.json(newPerson);
 });
 
-const PORT = process.env.PORT;
+const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
