@@ -1,7 +1,6 @@
 const AddMessage = (props) => {
     const style = {
         color: 'green',
-        fontStyle: 'italic',
         fontSize: 16
       };
       

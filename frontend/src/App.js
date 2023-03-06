@@ -15,7 +15,6 @@ const App = () => {
   const [ deleteMessage, setDeleteMessage ] = useState(false);
 
   useEffect(() => {
-    console.log("eka");
     contactService
     .getContacts()
     .then(contacts => {

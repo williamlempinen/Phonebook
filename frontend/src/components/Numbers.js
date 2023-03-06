@@ -1,6 +1,6 @@
 const Numbers = (props) => {
 return (
-    <div>
+    <div className="numbers-container">
       <ul>
         { props.persons.map( person => {
         return (

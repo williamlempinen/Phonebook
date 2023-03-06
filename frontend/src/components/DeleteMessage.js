@@ -1,7 +1,6 @@
 const DeleteMessage = (props) => {
     const style = {
         color: 'red',
-        fontStyle: 'italic',
         fontSize: 16,
       };
 
