@@ -1,7 +1,9 @@
 :root {
+    --add-color: #898121;
     --background-color: #FFD56F;
     --field-color: #F7F1E5;
     --text-color: #343434;
+    --delete-color: #820000;
 }
 
 html {
@@ -23,10 +25,6 @@ form {
     margin: auto;
 }
 
-p {
-    display: table-row;
-}
-
 label {
     display: table-cell;
 }
@@ -40,8 +38,32 @@ ul {
     list-style-type: none;
 }
 
+.add-container {
+    text-align: center;
+}
+
+.add-button {
+    margin: auto;
+    width: 30%;
+    border-radius: 10px;
+    background-color: var(--add-color);
+    color: var(--background-color)
+}
+
 .numbers-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.delete-button {
+    margin: auto;
+    width: 30%;
+    border-radius: 10px;
+    background-color: var(--delete-color);
+    color: var(--background-color);
+}
+
+.delete-container {
+    text-align: center;
 }
